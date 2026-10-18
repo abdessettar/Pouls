@@ -1,0 +1,433 @@
+# Population and guideline references shown next to the dashboard's numbers (mart_reference).
+#
+# Each [[set]] is one group of bands for one metric, from one source:
+#   kind = "range"       explicit bands (a guideline or a clinical normal range)
+#   kind = "percentile"  a population percentile table; bands run between consecutive percentiles
+#
+# Conventions
+# - Values are in the warehouse's units: bpm, ms, mL/kg/min, breaths/min, minutes, km/h, and
+#   fractions for shares and percentages (95% is 0.95). `scale` multiplies a set's numbers when the
+#   source prints another unit (cm/s x 0.036 = km/h, hours x 60 = minutes, % x 0.01 = fraction).
+# - A band is lo <= value < hi; a missing lo or hi leaves that side open.
+# - Categories published in whole numbers cover the whole unit: "21-30%" is 21% <= v < 31%, and
+#   "12 bpm or less" is v < 13 bpm. Continuous quantities (hours, minutes, steps) use the numbers
+#   as published.
+# - ages = [min, max] in whole years, both included; a set without ages applies to adults (18+).
+#   sex = "Female" or "Male" for sex-specific rows; the profile's biological sex picks the row.
+# - target = true marks the recommended or typical band (shaded darker, a green dot on tiles);
+#   warn = true marks a band that the source calls abnormal or not recommended (a red dot).
+#   Other bands are neutral.
+# - population describes who the numbers come from; "{who}" is replaced with e.g. "Women aged 30-39".
+
+# ----------------------------------------------------------------------------------------------
+# Sources (short = the name shown next to a band)
+# ----------------------------------------------------------------------------------------------
+
+[sources.friend2015]
+short = "FRIEND 2015"
+citation = "Kaminsky LA, Arena R, Myers J. Reference standards for cardiorespiratory fitness measured with cardiopulmonary exercise testing: data from the Fitness Registry and the Importance of Exercise National Database (FRIEND). Mayo Clin Proc. 2015;90(11):1515-1523, table 3."
+url = "https://doi.org/10.1016/j.mayocp.2015.07.026"
+note = "Treadmill tests with gas analysis in apparently healthy US adults. Apple's VO2max is a submaximal estimate from outdoor walks, runs and hikes. The 2022 FRIEND update reports values a few points lower."
+
+[sources.nhanes_pulse2011]
+short = "NHANES, Ostchega 2011"
+citation = "Ostchega Y, Porter KS, Hughes J, Dillon CF, Nwankwo T. Resting pulse rate reference data for children, adolescents, and adults: United States, 1999-2008. National Health Statistics Reports no. 41. National Center for Health Statistics; 2011."
+url = "https://stacks.cdc.gov/view/cdc/12363"
+note = "Seated 60-second pulse at a clinic visit. Apple's resting heart rate is estimated over the day while still, and usually reads lower."
+
+[sources.statpearls_hr]
+short = "StatPearls, heart rate"
+citation = "StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing. NCBI Bookshelf NBK553213 (adult heart rate at rest)."
+url = "https://www.ncbi.nlm.nih.gov/books/NBK553213/"
+note = "Clinical normal range for an adult heart rate at rest. Trained people often sit below 60 bpm without any problem."
+
+[sources.nunan2010]
+short = "Nunan 2010"
+citation = "Nunan D, Sandercock GRH, Brodie DA. A quantitative systematic review of normal values for short-term heart rate variability in healthy adults. Pacing Clin Electrophysiol. 2010;33(11):1407-1417 (as summarised in Shaffer F, Ginsberg JP. Front Public Health. 2017;5:258, table 6)."
+url = "https://doi.org/10.1111/j.1540-8159.2010.02841.x"
+note = "SDNN from 5-minute supine recordings; the band is the range of the studies' averages (mean 50 ms, SD 16). The Watch takes shorter readings during sleep, so treat the band as indicative only."
+
+[sources.cole1999]
+short = "Cole 1999"
+citation = "Cole CR, Blackstone EH, Pashkow FJ, Snader CE, Lauer MS. Heart-rate recovery immediately after exercise as a predictor of mortality. N Engl J Med. 1999;341(18):1351-1357."
+url = "https://doi.org/10.1056/NEJM199910283411804"
+note = "Drop from peak heart rate one minute after a symptom-limited exercise test; 12 bpm or less was abnormal. Apple measures from the end of a workout, which is often not a peak effort."
+
+[sources.statpearls_rr]
+short = "StatPearls, breathing rate"
+citation = "StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing. NCBI Bookshelf NBK537306 (adult respiratory rate at rest)."
+url = "https://www.ncbi.nlm.nih.gov/books/NBK537306/"
+note = "Adult breathing rate at rest while awake. The Watch measures during sleep, when breathing is a little slower; there is no sleep-specific norm."
+
+[sources.statpearls_spo2]
+short = "StatPearls, oxygen saturation"
+citation = "StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing. NCBI Bookshelf NBK525974 (oxygen saturation)."
+url = "https://www.ncbi.nlm.nih.gov/books/NBK525974/"
+note = "Normal arterial oxygen saturation for healthy adults. Apple notes that readings during sleep are often slightly lower (support article 120358)."
+
+[sources.nsf2015]
+short = "NSF 2015"
+citation = "Hirshkowitz M, Whiton K, Albert SM, et al. National Sleep Foundation's sleep time duration recommendations: methodology and results summary. Sleep Health. 2015;1(1):40-43, table 2."
+url = "https://doi.org/10.1016/j.sleh.2014.12.010"
+note = "Hours of sleep per night. The published categories are in whole hours; here each 'may be appropriate' band runs up to the recommended band. The AASM/SRS consensus (Watson 2015) recommends 7 hours or more for adults aged 18-60."
+
+[sources.ohayon2017]
+short = "NSF, Ohayon 2017"
+citation = "Ohayon M, Wickwire EM, Hirshkowitz M, et al. National Sleep Foundation's sleep quality recommendations: first report. Sleep Health. 2017;3(1):6-19."
+url = "https://doi.org/10.1016/j.sleh.2016.11.006"
+note = "Consensus on polysomnography measures. Apple's Deep stage corresponds to N3; shares are of total sleep time. Bands without consensus are left neutral."
+
+[sources.who2020]
+short = "WHO 2020"
+citation = "Bull FC, Al-Ansari SS, Biddle S, et al. World Health Organization 2020 guidelines on physical activity and sedentary behaviour. Br J Sports Med. 2020;54(24):1451-1462."
+url = "https://doi.org/10.1136/bjsports-2020-102955"
+note = "Weekly moderate-to-vigorous activity for adults, including 65 and over. Apple's exercise minutes approximate moderate-or-harder minutes; vigorous minutes here are minutes in heart-rate zones 4 and 5."
+
+[sources.paluch2022]
+short = "Paluch 2022"
+citation = "Paluch AE, Bajpai S, Bassett DR, et al. Daily steps and all-cause mortality: a meta-analysis of 15 international cohorts. Lancet Public Health. 2022;7(3):e219-e228."
+url = "https://doi.org/10.1016/S2468-2667(21)00302-9"
+note = "Lower mortality with more steps per day, levelling off at about 8,000-10,000 steps under 60 and 6,000-8,000 at 60 and over. More steps are not worse."
+
+[sources.bohannon2011]
+short = "Bohannon 2011"
+citation = "Bohannon RW, Andrews AW. Normal walking speed: a descriptive meta-analysis. Physiotherapy. 2011;97(3):182-189."
+url = "https://doi.org/10.1016/j.physio.2010.12.004"
+note = "Usual (comfortable) gait speed over a short walkway; the band is the 95% confidence interval of the mean for your age and sex. The iPhone measures everyday walking on flat ground."
+
+[sources.apple_mobility2022]
+short = "Apple 2022"
+citation = "Apple. Measuring Walking Quality Through Mobility Metrics. White paper, May 2022."
+url = "https://www.apple.com/healthcare/docs/site/Measuring_Walking_Quality_Through_iPhone_Mobility_Metrics.pdf"
+note = "Double support time is the share of the walking cycle with both feet on the ground. Typical walking ranges between 20 and 40%, with lower values indicating better balance."
+
+[sources.gabbett2016]
+short = "Gabbett 2016"
+citation = "Gabbett TJ. The training-injury prevention paradox: should athletes be training smarter and harder? Br J Sports Med. 2016;50(5):273-280."
+url = "https://doi.org/10.1136/bjsports-2015-095788"
+note = "Acute (7-day) to chronic (28-day) workload ratio from team-sport athletes: 0.8-1.3 'sweet spot', 1.5 and above 'danger zone' for injury. Here the load is Edwards TRIMP from heart-rate zones."
+
+# ----------------------------------------------------------------------------------------------
+# Heart
+# ----------------------------------------------------------------------------------------------
+
+[[set]]
+metric = "vo2max"
+kind = "percentile"
+source = "friend2015"
+population = "{who}, FRIEND registry, US treadmill tests"
+percentiles = [5, 10, 25, 50, 75, 90, 95]
+rows = [
+  { sex = "Male", ages = [20, 29], values = [29.0, 32.1, 40.1, 48.0, 55.2, 61.8, 66.3] },
+  { sex = "Male", ages = [30, 39], values = [27.2, 30.2, 35.9, 42.4, 49.2, 56.5, 59.8] },
+  { sex = "Male", ages = [40, 49], values = [24.2, 26.8, 31.9, 37.8, 45.0, 52.1, 55.6] },
+  { sex = "Male", ages = [50, 59], values = [20.9, 22.8, 27.1, 32.6, 39.7, 45.6, 50.7] },
+  { sex = "Male", ages = [60, 69], values = [17.4, 19.8, 23.7, 28.2, 34.5, 40.3, 43.0] },
+  { sex = "Male", ages = [70, 79], values = [16.3, 17.1, 20.4, 24.4, 30.4, 36.6, 39.7] },
+  { sex = "Female", ages = [20, 29], values = [21.7, 23.9, 30.5, 37.6, 44.7, 51.3, 56.0] },
+  { sex = "Female", ages = [30, 39], values = [19.0, 20.9, 25.3, 30.2, 36.1, 41.4, 45.8] },
+  { sex = "Female", ages = [40, 49], values = [17.0, 18.8, 22.1, 26.7, 32.4, 38.4, 41.7] },
+  { sex = "Female", ages = [50, 59], values = [16.0, 17.3, 19.9, 23.4, 27.6, 32.0, 35.9] },
+  { sex = "Female", ages = [60, 69], values = [13.4, 14.6, 17.2, 20.0, 23.8, 27.0, 29.4] },
+  { sex = "Female", ages = [70, 79], values = [13.1, 13.6, 15.6, 18.3, 20.8, 23.1, 24.1] },
+]
+
+[[set]]
+metric = "resting_hr"
+kind = "range"
+source = "statpearls_hr"
+population = "Adults at rest, clinical normal range"
+bands = [
+  { band = "below_60", label = "Below 60 bpm", hi = 60 },
+  { band = "normal", label = "60–100 bpm", lo = 60, hi = 100, target = true },
+  { band = "above_100", label = "Above 100 bpm", lo = 100, warn = true },
+]
+
+[[set]]
+metric = "resting_hr"
+kind = "percentile"
+source = "nhanes_pulse2011"
+population = "{who}, NHANES 1999–2008, US"
+percentiles = [5, 10, 25, 50, 75, 90, 95]
+rows = [
+  { sex = "Male", ages = [20, 39], values = [52, 55, 61, 69, 76, 84, 89] },
+  { sex = "Male", ages = [40, 59], values = [52, 55, 61, 68, 77, 85, 90] },
+  { sex = "Male", ages = [60, 79], values = [50, 54, 60, 67, 75, 84, 91] },
+  { sex = "Male", ages = [80, 120], values = [51, 54, 61, 68, 78, 86, 94] },
+  { sex = "Female", ages = [20, 39], values = [57, 60, 66, 74, 82, 89, 95] },
+  { sex = "Female", ages = [40, 59], values = [56, 59, 64, 71, 79, 86, 92] },
+  { sex = "Female", ages = [60, 79], values = [56, 59, 64, 70, 78, 86, 92] },
+  { sex = "Female", ages = [80, 120], values = [56, 59, 64, 71, 77, 85, 93] },
+]
+
+[[set]]
+metric = "hrv_sdnn"
+kind = "range"
+source = "nunan2010"
+population = "Healthy adults, 5-minute supine recordings"
+bands = [
+  { band = "below", label = "Below 32 ms", hi = 32 },
+  { band = "typical", label = "32–93 ms", lo = 32, hi = 93, target = true },
+  { band = "above", label = "Above 93 ms", lo = 93 },
+]
+
+[[set]]
+metric = "hr_recovery"
+kind = "range"
+source = "cole1999"
+population = "Adults after an exercise test, one minute from peak"
+bands = [
+  { band = "abnormal", label = "12 bpm or less", hi = 13, warn = true },
+  { band = "normal", label = "More than 12 bpm", lo = 13, target = true },
+]
+
+[[set]]
+metric = "respiratory_rate"
+kind = "range"
+source = "statpearls_rr"
+population = "Adults at rest, awake"
+bands = [
+  { band = "below", label = "Below 12 /min", hi = 12 },
+  { band = "normal", label = "12–20 /min", lo = 12, hi = 20, target = true },
+  { band = "above", label = "Above 20 /min", lo = 20, warn = true },
+]
+
+[[set]]
+metric = "spo2"
+kind = "range"
+source = "statpearls_spo2"
+population = "Healthy adults"
+scale = 0.01
+bands = [
+  { band = "low", label = "Below 95%", hi = 95, warn = true },
+  { band = "normal", label = "95–100%", lo = 95, target = true },
+]
+
+# ----------------------------------------------------------------------------------------------
+# Sleep (minutes asleep; shares as fractions of total sleep time)
+# ----------------------------------------------------------------------------------------------
+
+[[set]]
+metric = "sleep_duration"
+kind = "range"
+source = "nsf2015"
+population = "Young adults aged 18–25"
+ages = [18, 25]
+scale = 60
+bands = [
+  { band = "short", label = "Less than 6 hours", hi = 6, warn = true },
+  { band = "may_short", label = "6–7 hours", lo = 6, hi = 7 },
+  { band = "recommended", label = "7–9 hours", lo = 7, hi = 9, target = true },
+  { band = "may_long", label = "9–11 hours", lo = 9, hi = 11 },
+  { band = "long", label = "More than 11 hours", lo = 11, warn = true },
+]
+
+[[set]]
+metric = "sleep_duration"
+kind = "range"
+source = "nsf2015"
+population = "Adults aged 26–64"
+ages = [26, 64]
+scale = 60
+bands = [
+  { band = "short", label = "Less than 6 hours", hi = 6, warn = true },
+  { band = "may_short", label = "6–7 hours", lo = 6, hi = 7 },
+  { band = "recommended", label = "7–9 hours", lo = 7, hi = 9, target = true },
+  { band = "may_long", label = "9–10 hours", lo = 9, hi = 10 },
+  { band = "long", label = "More than 10 hours", lo = 10, warn = true },
+]
+
+[[set]]
+metric = "sleep_duration"
+kind = "range"
+source = "nsf2015"
+population = "Older adults, 65 and over"
+ages = [65, 120]
+scale = 60
+bands = [
+  { band = "short", label = "Less than 5 hours", hi = 5, warn = true },
+  { band = "may_short", label = "5–7 hours", lo = 5, hi = 7 },
+  { band = "recommended", label = "7–8 hours", lo = 7, hi = 8, target = true },
+  { band = "may_long", label = "8–9 hours", lo = 8, hi = 9 },
+  { band = "long", label = "More than 9 hours", lo = 9, warn = true },
+]
+
+[[set]]
+metric = "sleep_efficiency"
+kind = "range"
+source = "ohayon2017"
+population = "Young adults aged 18–25"
+ages = [18, 25]
+scale = 0.01
+bands = [
+  { band = "not_good", label = "64% or less", hi = 65, warn = true },
+  { band = "uncertain", label = "65–84%", lo = 65, hi = 85 },
+  { band = "good", label = "85% or more", lo = 85, target = true },
+]
+
+[[set]]
+metric = "sleep_efficiency"
+kind = "range"
+source = "ohayon2017"
+population = "Adults, 26 and over"
+ages = [26, 120]
+scale = 0.01
+bands = [
+  { band = "not_good", label = "74% or less", hi = 75, warn = true },
+  { band = "uncertain", label = "75–84%", lo = 75, hi = 85 },
+  { band = "good", label = "85% or more", lo = 85, target = true },
+]
+
+[[set]]
+metric = "deep_sleep_share"
+kind = "range"
+source = "ohayon2017"
+population = "Young adults aged 18–25"
+ages = [18, 25]
+scale = 0.01
+bands = [
+  { band = "not_good", label = "5% or less", hi = 6, warn = true },
+]
+
+[[set]]
+metric = "deep_sleep_share"
+kind = "range"
+source = "ohayon2017"
+population = "Adults aged 26–64"
+ages = [26, 64]
+scale = 0.01
+bands = [
+  { band = "not_good", label = "5% or less", hi = 6, warn = true },
+  { band = "good", label = "16–20%", lo = 16, hi = 21, target = true },
+]
+
+[[set]]
+metric = "rem_sleep_share"
+kind = "range"
+source = "ohayon2017"
+population = "Young adults aged 18–25"
+ages = [18, 25]
+scale = 0.01
+bands = [
+  { band = "not_good", label = "41% or more", lo = 41, warn = true },
+]
+
+[[set]]
+metric = "rem_sleep_share"
+kind = "range"
+source = "ohayon2017"
+population = "Adults aged 26–64"
+ages = [26, 64]
+scale = 0.01
+bands = [
+  { band = "good", label = "21–30%", lo = 21, hi = 31, target = true },
+  { band = "not_good", label = "41% or more", lo = 41, warn = true },
+]
+
+[[set]]
+metric = "rem_sleep_share"
+kind = "range"
+source = "ohayon2017"
+population = "Older adults, 65 and over"
+ages = [65, 120]
+scale = 0.01
+bands = [
+  { band = "not_good", label = "41% or more", lo = 41, warn = true },
+]
+
+# ----------------------------------------------------------------------------------------------
+# Activity and training
+# ----------------------------------------------------------------------------------------------
+
+[[set]]
+metric = "exercise_minutes_week"
+kind = "range"
+source = "who2020"
+population = "Adults, including 65 and over"
+bands = [
+  { band = "below", label = "Less than 150 min a week", hi = 150, warn = true },
+  { band = "guideline", label = "150–300 min a week", lo = 150, hi = 300, target = true },
+  { band = "more", label = "More than 300 min a week", lo = 300, target = true },
+]
+
+[[set]]
+metric = "vigorous_minutes_week"
+kind = "range"
+source = "who2020"
+population = "Adults, including 65 and over"
+bands = [
+  { band = "below", label = "Less than 75 vigorous min a week", hi = 75 },
+  { band = "guideline", label = "75–150 vigorous min a week", lo = 75, hi = 150, target = true },
+  { band = "more", label = "More than 150 vigorous min a week", lo = 150, target = true },
+]
+
+[[set]]
+metric = "steps"
+kind = "range"
+source = "paluch2022"
+population = "Adults under 60"
+ages = [18, 59]
+bands = [
+  { band = "below", label = "Below 8,000 steps", hi = 8000 },
+  { band = "plateau", label = "8,000–10,000 steps", lo = 8000, hi = 10000, target = true },
+  { band = "more", label = "More than 10,000 steps", lo = 10000, target = true },
+]
+
+[[set]]
+metric = "steps"
+kind = "range"
+source = "paluch2022"
+population = "Adults aged 60 and over"
+ages = [60, 120]
+bands = [
+  { band = "below", label = "Below 6,000 steps", hi = 6000 },
+  { band = "plateau", label = "6,000–8,000 steps", lo = 6000, hi = 8000, target = true },
+  { band = "more", label = "More than 8,000 steps", lo = 8000, target = true },
+]
+
+# Bohannon & Andrews 2011, table 2: mean usual walking speed (cm/s) and its 95% confidence interval.
+# Each row is one band: the confidence interval of the mean for that age group and sex.
+[[set]]
+metric = "walking_speed"
+kind = "range"
+source = "bohannon2011"
+population = "{who}, usual walking speed"
+scale = 0.036
+rows = [
+  { sex = "Male", ages = [20, 29], bands = [{ band = "average", label = "Average for age (95% CI)", lo = 127.0, hi = 144.7, target = true }] },
+  { sex = "Male", ages = [30, 39], bands = [{ band = "average", label = "Average for age (95% CI)", lo = 131.6, hi = 155.0, target = true }] },
+  { sex = "Male", ages = [40, 49], bands = [{ band = "average", label = "Average for age (95% CI)", lo = 135.3, hi = 151.4, target = true }] },
+  { sex = "Male", ages = [50, 59], bands = [{ band = "average", label = "Average for age (95% CI)", lo = 137.9, hi = 148.8, target = true }] },
+  { sex = "Male", ages = [60, 69], bands = [{ band = "average", label = "Average for age (95% CI)", lo = 126.6, hi = 141.2, target = true }] },
+  { sex = "Male", ages = [70, 79], bands = [{ band = "average", label = "Average for age (95% CI)", lo = 121.0, hi = 132.2, target = true }] },
+  { sex = "Male", ages = [80, 99], bands = [{ band = "average", label = "Average for age (95% CI)", lo = 83.4, hi = 110.1, target = true }] },
+  { sex = "Female", ages = [20, 29], bands = [{ band = "average", label = "Average for age (95% CI)", lo = 123.9, hi = 144.3, target = true }] },
+  { sex = "Female", ages = [30, 39], bands = [{ band = "average", label = "Average for age (95% CI)", lo = 119.3, hi = 148.2, target = true }] },
+  { sex = "Female", ages = [40, 49], bands = [{ band = "average", label = "Average for age (95% CI)", lo = 133.9, hi = 141.1, target = true }] },
+  { sex = "Female", ages = [50, 59], bands = [{ band = "average", label = "Average for age (95% CI)", lo = 122.2, hi = 140.5, target = true }] },
+  { sex = "Female", ages = [60, 69], bands = [{ band = "average", label = "Average for age (95% CI)", lo = 118.3, hi = 130.0, target = true }] },
+  { sex = "Female", ages = [70, 79], bands = [{ band = "average", label = "Average for age (95% CI)", lo = 107.2, hi = 119.2, target = true }] },
+  { sex = "Female", ages = [80, 99], bands = [{ band = "average", label = "Average for age (95% CI)", lo = 85.2, hi = 103.4, target = true }] },
+]
+
+[[set]]
+metric = "double_support"
+kind = "range"
+source = "apple_mobility2022"
+population = "Adults, Apple's typical range"
+scale = 0.01
+bands = [
+  { band = "typical", label = "20–40%", lo = 20, hi = 40, target = true },
+]
+
+[[set]]
+metric = "training_load_ratio"
+kind = "range"
+source = "gabbett2016"
+population = "Team-sport athletes"
+bands = [
+  { band = "low", label = "Below 0.8", hi = 0.8 },
+  { band = "sweet_spot", label = "Sweet spot", lo = 0.8, hi = 1.3, target = true },
+  { band = "rising", label = "1.3–1.5", lo = 1.3, hi = 1.5 },
+  { band = "danger", label = "Danger zone", lo = 1.5, warn = true },
+]

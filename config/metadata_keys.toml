@@ -1,0 +1,90 @@
+# Metadata keys (MetadataEntry key/value pairs on records and workouts).
+#
+# Every metadata entry is kept in long form (fct_sample_metadata / fct_workout_metadata) with
+# a generic parse: "<number> <unit>" -> value_num + value_unit, "H:MM:SS" -> seconds.
+# This file only adds what the generic parse cannot know:
+#
+# canonical_unit  convert value_num to this unit (conversion must be known in units.py)
+# scale           multiply value_num by this factor (e.g. humidity exported as "10000 %")
+# promote         also expose the value as a typed column on the fact table(s) in `targets`
+# type            type of the promoted column: float | int | bool | string
+# targets         subset of: sample, workout
+
+# --- Promoted on samples ----------------------------------------------------------------------
+[keys.HKTimeZone]
+promote = "hk_time_zone"
+type = "string"
+targets = ["sample", "workout"]
+
+[keys.HKMetadataKeyHeartRateMotionContext]
+promote = "hr_motion_context"
+type = "int"
+targets = ["sample"]
+
+[keys.HKMetadataKeySyncIdentifier]
+promote = "sync_identifier"
+type = "string"
+targets = ["sample"]
+
+[keys.HKAlgorithmVersion]
+promote = "algorithm_version"
+type = "int"
+targets = ["sample"]
+
+[keys.HKMetadataKeyAudioExposureLevel]
+promote = "audio_exposure_level_dbaspl"
+type = "float"
+targets = ["sample"]
+
+[keys.HKHeartRateEventThreshold]
+promote = "heart_rate_event_threshold_bpm"
+type = "float"
+targets = ["sample"]
+
+# --- Promoted on workouts ---------------------------------------------------------------------
+[keys.HKIndoorWorkout]
+promote = "is_indoor"
+type = "bool"
+targets = ["workout"]
+
+[keys.HKAverageMETs]
+promote = "avg_mets"
+type = "float"
+targets = ["workout"]
+
+[keys.HKWeatherTemperature]
+canonical_unit = "degC"
+promote = "weather_temperature_c"
+type = "float"
+targets = ["workout"]
+
+[keys.HKWeatherHumidity]
+# Exported as hundredths of a percent: "10000 %" means 100 %.
+scale = 0.01
+promote = "weather_humidity_pct"
+type = "float"
+targets = ["workout"]
+
+[keys.HKElevationAscended]
+canonical_unit = "m"
+promote = "elevation_ascended_m"
+type = "float"
+targets = ["workout"]
+
+[keys.HKLapLength]
+canonical_unit = "m"
+promote = "lap_length_m"
+type = "float"
+targets = ["workout"]
+
+[keys.HKSwimmingLocationType]
+promote = "swimming_location_type"
+type = "int"
+targets = ["workout"]
+
+# --- Unit normalisation only --------------------------------------------------------------------
+[keys.HKMetadataKeyHeartRateRecoveryActivityDuration]
+canonical_unit = "s"
+
+[keys.HKMetadataKeyAudioExposureDuration]
+canonical_unit = "s"

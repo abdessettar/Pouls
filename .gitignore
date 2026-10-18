@@ -1,0 +1,37 @@
+# Raw Apple Health export (often several GB, personal health data) — never commit
+/data/
+
+# The coach's journal (goals, check-ins, plans): personal
+/coach/
+# Claude Code's per-user settings (the shared commands in .claude/commands are committed)
+/.claude/settings.local.json
+
+# Reference data downloaded by scripts/ (GeoNames place names)
+/reference/
+
+# Pipeline outputs
+warehouse/
+*.parquet
+
+# Python / uv
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+
+# Dashboard: dependencies, build output and loader cache (the last two contain health data)
+node_modules/
+dashboard/dist/
+dashboard/src/.observablehq/

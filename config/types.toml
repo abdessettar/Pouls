@@ -1,0 +1,357 @@
+# HealthKit sample-type registry.
+#
+# unit         canonical unit. A raw unit that differs is converted if a conversion is known
+#              (apple_health.transform.units), otherwise the source contract fails.
+# aggregation  cumulative = values add up over time (sum; overlapping sources must be resolved)
+#              discrete   = point measurements (mean / min / max)
+#              category   = enumerated states
+# min / max    plausible range; values outside are flagged `is_outlier` (never dropped).
+#              Note: HealthKit "%" values are fractions (0.97 = 97 %).
+#
+# Types not listed here are still loaded (kind inferred from the identifier prefix) and
+# reported by the data-quality checks as unknown.
+
+# --- Activity / energy (cumulative) -------------------------------------------------------
+[types.HKQuantityTypeIdentifierActiveEnergyBurned]
+unit = "kcal"
+aggregation = "cumulative"
+min = 0
+max = 2000
+
+[types.HKQuantityTypeIdentifierBasalEnergyBurned]
+unit = "kcal"
+aggregation = "cumulative"
+min = 0
+max = 3000
+
+[types.HKQuantityTypeIdentifierStepCount]
+unit = "count"
+aggregation = "cumulative"
+min = 0
+max = 50000
+
+[types.HKQuantityTypeIdentifierDistanceWalkingRunning]
+unit = "km"
+aggregation = "cumulative"
+min = 0
+max = 50
+
+[types.HKQuantityTypeIdentifierDistanceCycling]
+unit = "km"
+aggregation = "cumulative"
+min = 0
+max = 100
+
+[types.HKQuantityTypeIdentifierDistanceSwimming]
+unit = "m"
+aggregation = "cumulative"
+min = 0
+max = 5000
+
+[types.HKQuantityTypeIdentifierSwimmingStrokeCount]
+unit = "count"
+aggregation = "cumulative"
+min = 0
+max = 5000
+
+[types.HKQuantityTypeIdentifierFlightsClimbed]
+unit = "count"
+aggregation = "cumulative"
+min = 0
+max = 500
+
+[types.HKQuantityTypeIdentifierAppleExerciseTime]
+unit = "min"
+aggregation = "cumulative"
+min = 0
+max = 1440
+
+[types.HKQuantityTypeIdentifierAppleStandTime]
+unit = "min"
+aggregation = "cumulative"
+min = 0
+max = 1440
+
+[types.HKQuantityTypeIdentifierTimeInDaylight]
+unit = "min"
+aggregation = "cumulative"
+min = 0
+max = 1440
+
+# --- Heart -----------------------------------------------------------------------------------
+[types.HKQuantityTypeIdentifierHeartRate]
+unit = "count/min"
+aggregation = "discrete"
+min = 25
+max = 250
+
+[types.HKQuantityTypeIdentifierRestingHeartRate]
+unit = "count/min"
+aggregation = "discrete"
+min = 25
+max = 150
+
+[types.HKQuantityTypeIdentifierWalkingHeartRateAverage]
+unit = "count/min"
+aggregation = "discrete"
+min = 30
+max = 220
+
+[types.HKQuantityTypeIdentifierHeartRateVariabilitySDNN]
+unit = "ms"
+aggregation = "discrete"
+min = 1
+max = 400
+
+[types.HKQuantityTypeIdentifierHeartRateRecoveryOneMinute]
+unit = "count/min"
+aggregation = "discrete"
+min = 0
+max = 120
+
+[types.HKQuantityTypeIdentifierVO2Max]
+unit = "mL/min·kg"
+aggregation = "discrete"
+min = 10
+max = 90
+
+# --- Respiratory / vitals -------------------------------------------------------------------
+[types.HKQuantityTypeIdentifierRespiratoryRate]
+unit = "count/min"
+aggregation = "discrete"
+min = 4
+max = 60
+
+[types.HKQuantityTypeIdentifierOxygenSaturation]
+unit = "%"
+aggregation = "discrete"
+min = 0.5
+max = 1.0
+
+[types.HKQuantityTypeIdentifierAppleSleepingWristTemperature]
+unit = "degC"
+aggregation = "discrete"
+min = 30
+max = 42
+
+# --- Body ------------------------------------------------------------------------------------
+[types.HKQuantityTypeIdentifierBodyMass]
+unit = "kg"
+aggregation = "discrete"
+min = 20
+max = 300
+
+[types.HKQuantityTypeIdentifierHeight]
+unit = "cm"
+aggregation = "discrete"
+min = 50
+max = 250
+
+# --- Mobility (iPhone) ----------------------------------------------------------------------
+[types.HKQuantityTypeIdentifierWalkingSpeed]
+unit = "km/hr"
+aggregation = "discrete"
+min = 0
+max = 15
+
+[types.HKQuantityTypeIdentifierWalkingStepLength]
+unit = "cm"
+aggregation = "discrete"
+min = 10
+max = 200
+
+[types.HKQuantityTypeIdentifierWalkingDoubleSupportPercentage]
+unit = "%"
+aggregation = "discrete"
+min = 0
+max = 1
+
+[types.HKQuantityTypeIdentifierWalkingAsymmetryPercentage]
+unit = "%"
+aggregation = "discrete"
+min = 0
+max = 1
+
+[types.HKQuantityTypeIdentifierAppleWalkingSteadiness]
+unit = "%"
+aggregation = "discrete"
+min = 0
+max = 1
+
+[types.HKQuantityTypeIdentifierSixMinuteWalkTestDistance]
+unit = "m"
+aggregation = "discrete"
+min = 50
+max = 1500
+
+[types.HKQuantityTypeIdentifierStairAscentSpeed]
+unit = "m/s"
+aggregation = "discrete"
+min = 0
+max = 3
+
+[types.HKQuantityTypeIdentifierStairDescentSpeed]
+unit = "m/s"
+aggregation = "discrete"
+min = 0
+max = 3
+
+# --- Running dynamics -------------------------------------------------------------------------
+[types.HKQuantityTypeIdentifierRunningPower]
+unit = "W"
+aggregation = "discrete"
+min = 0
+max = 1000
+
+[types.HKQuantityTypeIdentifierRunningSpeed]
+unit = "km/hr"
+aggregation = "discrete"
+min = 0
+max = 45
+
+[types.HKQuantityTypeIdentifierRunningStrideLength]
+unit = "m"
+aggregation = "discrete"
+min = 0.2
+max = 3
+
+[types.HKQuantityTypeIdentifierRunningVerticalOscillation]
+unit = "cm"
+aggregation = "discrete"
+min = 0
+max = 30
+
+[types.HKQuantityTypeIdentifierRunningGroundContactTime]
+unit = "ms"
+aggregation = "discrete"
+min = 50
+max = 1000
+
+# --- Effort -----------------------------------------------------------------------------------
+[types.HKQuantityTypeIdentifierPhysicalEffort]
+unit = "kcal/hr·kg"
+aggregation = "discrete"
+min = 0
+max = 30
+
+[types.HKQuantityTypeIdentifierWorkoutEffortScore]
+unit = "appleEffortScore"
+aggregation = "discrete"
+min = 0
+max = 10
+
+[types.HKQuantityTypeIdentifierEstimatedWorkoutEffortScore]
+unit = "appleEffortScore"
+aggregation = "discrete"
+min = 0
+max = 10
+
+# --- Hearing -----------------------------------------------------------------------------------
+[types.HKQuantityTypeIdentifierEnvironmentalAudioExposure]
+unit = "dBASPL"
+aggregation = "discrete"
+min = 0
+max = 140
+
+[types.HKQuantityTypeIdentifierHeadphoneAudioExposure]
+unit = "dBASPL"
+aggregation = "discrete"
+min = 0
+max = 140
+
+[types.HKQuantityTypeIdentifierEnvironmentalSoundReduction]
+unit = "dBASPL"
+aggregation = "discrete"
+min = 0
+max = 60
+
+# --- Goals --------------------------------------------------------------------------------------
+[types.HKDataTypeSleepDurationGoal]
+kind = "quantity"
+unit = "hr"
+aggregation = "discrete"
+min = 0
+max = 24
+
+# --- Categories ---------------------------------------------------------------------------------
+# `values` maps raw enum values to a short label and HealthKit's raw integer value (ordinal).
+# Unlisted values get a label derived from the identifier.
+
+[types.HKCategoryTypeIdentifierSleepAnalysis]
+aggregation = "category"
+[types.HKCategoryTypeIdentifierSleepAnalysis.values]
+HKCategoryValueSleepAnalysisInBed = { label = "InBed", ordinal = 0 }
+HKCategoryValueSleepAnalysisAsleepUnspecified = { label = "AsleepUnspecified", ordinal = 1 }
+HKCategoryValueSleepAnalysisAwake = { label = "Awake", ordinal = 2 }
+HKCategoryValueSleepAnalysisAsleepCore = { label = "Core", ordinal = 3 }
+HKCategoryValueSleepAnalysisAsleepDeep = { label = "Deep", ordinal = 4 }
+HKCategoryValueSleepAnalysisAsleepREM = { label = "REM", ordinal = 5 }
+
+[types.HKCategoryTypeIdentifierAppleStandHour]
+aggregation = "category"
+[types.HKCategoryTypeIdentifierAppleStandHour.values]
+HKCategoryValueAppleStandHourStood = { label = "Stood", ordinal = 0 }
+HKCategoryValueAppleStandHourIdle = { label = "Idle", ordinal = 1 }
+
+[types.HKCategoryTypeIdentifierAudioExposureEvent]
+aggregation = "category"
+[types.HKCategoryTypeIdentifierAudioExposureEvent.values]
+HKCategoryValueEnvironmentalAudioExposureEventMomentaryLimit = { label = "MomentaryLimit", ordinal = 1 }
+
+[types.HKCategoryTypeIdentifierHeadphoneAudioExposureEvent]
+aggregation = "category"
+[types.HKCategoryTypeIdentifierHeadphoneAudioExposureEvent.values]
+HKCategoryValueHeadphoneAudioExposureEventSevenDayLimit = { label = "SevenDayLimit", ordinal = 1 }
+
+[types.HKCategoryTypeIdentifierHighHeartRateEvent]
+aggregation = "category"
+
+[types.HKCategoryTypeIdentifierMindfulSession]
+aggregation = "category"
+
+
+# --- Workout statistics -> fct_workout columns --------------------------------------------------
+# For each WorkoutStatistics type: which statistic becomes which column of fct_workout.
+# Values are in the canonical unit of the type above. All statistics (including unlisted
+# types) are always available in long form in fct_workout_statistic.
+
+[workout_statistics.HKQuantityTypeIdentifierActiveEnergyBurned]
+sum = "active_energy_kcal"
+
+[workout_statistics.HKQuantityTypeIdentifierBasalEnergyBurned]
+sum = "basal_energy_kcal"
+
+[workout_statistics.HKQuantityTypeIdentifierDistanceWalkingRunning]
+sum = "distance_walking_running_km"
+
+[workout_statistics.HKQuantityTypeIdentifierDistanceCycling]
+sum = "distance_cycling_km"
+
+[workout_statistics.HKQuantityTypeIdentifierDistanceSwimming]
+sum = "distance_swimming_m"
+
+[workout_statistics.HKQuantityTypeIdentifierSwimmingStrokeCount]
+sum = "swimming_stroke_count"
+
+[workout_statistics.HKQuantityTypeIdentifierStepCount]
+sum = "step_count"
+
+[workout_statistics.HKQuantityTypeIdentifierHeartRate]
+average = "heart_rate_avg_bpm"
+minimum = "heart_rate_min_bpm"
+maximum = "heart_rate_max_bpm"
+
+[workout_statistics.HKQuantityTypeIdentifierRunningPower]
+average = "running_power_avg_w"
+
+[workout_statistics.HKQuantityTypeIdentifierRunningSpeed]
+average = "running_speed_avg_kmh"
+
+[workout_statistics.HKQuantityTypeIdentifierRunningStrideLength]
+average = "running_stride_length_avg_m"
+
+[workout_statistics.HKQuantityTypeIdentifierRunningGroundContactTime]
+average = "running_ground_contact_time_avg_ms"
+
+[workout_statistics.HKQuantityTypeIdentifierRunningVerticalOscillation]
+average = "running_vertical_oscillation_avg_cm"

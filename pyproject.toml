@@ -1,0 +1,43 @@
+[project]
+name = "apple-health"
+version = "0.1.0"
+license = "MIT"
+license-files = ["LICENSE"]
+description = "Data engineering pipeline: Apple Health export -> analytics-ready Parquet"
+requires-python = ">=3.12"
+dependencies = [
+    "lxml>=6.0",
+    "mcp>=2.3.0",
+    "polars>=2.0,<3",
+]
+
+[project.scripts]
+apple-health = "apple_health.cli:main"
+apple-health-coach = "apple_health.coach.server:main"
+
+[build-system]
+requires = ["uv_build>=0.11.7,<0.12.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.16.10",
+]
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
+ignore = ["RUF001", "RUF002", "RUF003"]  # the data legitimately contains ’ and · characters
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-m 'not real_data and not dashboard'"
+markers = [
+    "real_data: runs against the real export in data/ (slow; skipped if absent)",
+    "dashboard: builds the Observable Framework site against the fixture (needs npm + node_modules)",
+]

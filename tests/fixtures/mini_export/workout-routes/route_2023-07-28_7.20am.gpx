@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="Apple Health Export" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+  <metadata>
+    <time>2025-05-05T16:31:53Z</time>
+  </metadata>
+  <trk>
+    <name>Route 2023-07-28 7:20am</name>
+    <trkseg>
+      <trkpt lon="6.000000" lat="46.000000"><ele>200.0</ele><time>2023-07-28T05:00:04Z</time><extensions><speed>3.0</speed><course>0.0</course><hAcc>2.0</hAcc><vAcc>1.0</vAcc></extensions></trkpt>
+      <trkpt lon="6.000000" lat="46.010000"><ele>201.0</ele><time>2023-07-28T05:10:00Z</time><extensions><speed>3.2</speed><course>0.0</course><hAcc>2.0</hAcc><vAcc>1.0</vAcc></extensions></trkpt>
+      <trkpt lon="6.000000" lat="46.010010"><ele>201.0</ele><time>2023-07-28T05:10:00Z</time><extensions><speed>3.2</speed><course>0.0</course><hAcc>2.0</hAcc><vAcc>1.0</vAcc></extensions></trkpt>
+      <trkpt lon="6.000000" lat="46.020000"><ele>202.0</ele><time>2023-07-28T05:20:00Z</time><extensions><speed>3.1</speed><course>0.0</course><hAcc>2.0</hAcc><vAcc>1.0</vAcc><cadence>170</cadence></extensions></trkpt>
+    </trkseg>
+  </trk>
+</gpx>

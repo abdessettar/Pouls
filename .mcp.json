@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "pouls-coach": {
+      "type": "stdio",
+      "command": "uv",
+      "args": ["run", "--quiet", "apple-health-coach"]
+    }
+  }
+}

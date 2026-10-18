@@ -1,0 +1,97 @@
+# Pipeline settings. Paths are relative to the project root (the directory containing this
+# config/ folder) unless absolute.
+
+[paths]
+raw_dir = "data"                 # unzipped Apple Health export (read-only)
+warehouse_dir = "warehouse"      # all pipeline outputs
+
+[source]
+# HealthKit export format version the pipeline was built and validated against
+# (from the `<!-- HealthKit Export Version: N -->` comment in export.xml).
+# A different version fails the source contract until this value is updated deliberately.
+expected_export_version = 17
+xml_file = "export.xml"
+routes_dir = "workout-routes"
+
+[time]
+# Zone used when neither the sample nor the inferred time-zone timeline provides one.
+# Set it to your own home zone (an IANA name such as "America/New_York").
+default_timezone = "Europe/Berlin"
+# Timeline evidence: HKTimeZone metadata on these entities.
+evidence_from = ["workout", "sleep"]
+# Zone of the device at export time. HRV beat times ("HH:MM:SS,cc") are rendered in this zone
+# (with its DST rules), not in the zone where the measurement was taken. Empty = default_timezone.
+# The build checks that this zone's UTC offset at export time equals the export's rendered offset.
+export_timezone = ""
+
+[sources]
+# Source priority for resolving overlapping cumulative data (steps, distance, energy, ...).
+# Normalised source names (owner name stripped). Unlisted sources rank after these by kind.
+priority = ["Apple Watch", "iPhone"]
+kind_priority = ["watch", "phone", "external_sensor", "apple_app", "third_party_app"]
+
+[sources.kinds]
+# Normalised source name -> kind. Anything not matched by the rules in code or listed here
+# is classified as "third_party_app".
+"Bluetooth Device" = "external_sensor"
+"Health" = "apple_app"
+"Fitness" = "apple_app"
+"Blood Oxygen" = "apple_app"
+"Settings" = "apple_app"
+
+[parse]
+chunk_rows = 500_000             # rows buffered per staging table before flushing a part file
+gpx_workers = 0                  # 0 = number of CPUs
+
+[manifest]
+hash_files = true                # SHA-256 of raw files in the run manifest
+
+[routes]
+match_tolerance_s = 5            # GPX points vs. route start/end tolerance
+max_speed_mps = 30.0             # point speed above this is flagged `speed_outlier`
+max_horizontal_accuracy_m = 50.0 # h_acc above this is flagged `low_accuracy`
+
+[sleep]
+session_gap_minutes = 60         # gap between sleep samples that starts a new session
+
+[marts]
+# A local hour counts as "worn" when it has at least one Apple Watch heart-rate sample.
+valid_day_min_worn_hours = 16    # mart_daily.is_valid_wear_day threshold
+
+[analytics]
+# Personal baselines (mart_baselines), computed over valid wear days.
+baseline_metrics = [
+  "resting_hr_bpm", "hrv_sdnn_sleep_ms", "respiratory_rate_sleep", "walking_hr_avg_bpm", "vo2max",
+  "spo2_median", "sleep_asleep_min", "steps", "active_energy_kcal", "exercise_min",
+]
+rolling_short_days = 7
+rolling_long_days = 28
+normal_range_days = 90           # "your normal": rolling 10th-90th percentile
+baseline_days = 60               # z-scores against the previous 60 days (current day excluded)
+baseline_min_days = 20
+strain_z = 1.0                   # strained day: HRV z <= -strain_z and resting HR z >= +strain_z
+late_workout_hours = 3           # workout ending within N hours before bedtime
+zone_weights = [1, 2, 3, 4, 5]   # Edwards TRIMP weights for heart-rate zones 1-5
+acute_days = 7
+chronic_days = 28
+run_split_m = 1000
+best_effort_m = [1000, 5000, 10000]
+track_resolution_m = 15          # map tracks keep a point every N metres
+area_cluster_km = 25             # routes whose centres are closer than this share an area
+# Areas are named after the city within place_name_radius_km of their centre that best combines size
+# and closeness, from GeoNames' cities with 15,000+ people (CC BY 4.0; fetched by
+# scripts/fetch-place-names.sh). Without the file they are named after the time zone's city.
+place_names_file = "reference/geonames/cities15000.zip"
+place_name_radius_km = 50
+
+[quality]
+outlier_max_rate = 0.001         # max share of out-of-range samples per type before warning
+activity_reconciliation_tolerance = 0.01
+activity_reconciliation_min_match_rate = 0.90
+hrv_beat_tolerance_s = 5
+
+[coach]
+journal = "coach/journal.sqlite"   # the coach's journal (goals, check-ins, plans); personal, git-ignored
+
+[snapshots]
+keep = 3                         # number of per-export id snapshots kept for drift diffs

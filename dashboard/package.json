@@ -1,0 +1,24 @@
+{
+  "name": "pouls",
+  "version": "0.1.0",
+  "description": "Pouls: local health dashboards over the Apple Health warehouse (Observable Framework).",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "OBSERVABLE_TELEMETRY_DISABLE=true observable preview --host 127.0.0.1",
+    "build": "OBSERVABLE_TELEMETRY_DISABLE=true observable build && node scripts/check-dist.js",
+    "check": "node scripts/check-dist.js",
+    "serve": "../.venv/bin/python scripts/serve.py --bind 127.0.0.1 --port 3001",
+    "serve:lan": "node scripts/serve-lan.js",
+    "clean": "rm -rf src/.observablehq/cache dist"
+  },
+  "dependencies": {
+    "@observablehq/framework": "^1.13.4"
+  },
+  "devDependencies": {
+    "@fontsource-variable/inter": "^5.3.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
